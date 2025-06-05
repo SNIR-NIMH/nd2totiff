@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
 
     if os.path.isfile(result.INPUT):
-        if str(result.BACKEND).lower() == 'pytiff':
+        if str(result.BACKEND).lower() == 'pytiff':  # pytiff isn't supported on Windows
             handle = Tiff(result.INPUT)
             dim = (handle.size[0], handle.size[1], handle.number_of_pages)
             handle.close()
@@ -96,7 +96,8 @@ if __name__ == '__main__':
             # So it is safe to use imread to read the header
             img = np.asarray(imread(result.INPUT, plugin='tifffile'), dtype=np.uint16)
             dim = np.array(img).shape
-            dim = (dim[1],dim[2],dim[0])  # skimage.io has channel fi
+            if dim[2] != 3: # If there are 3 z-slices/focus planes, imread considers it as an RGB image
+                dim = (dim[1],dim[2],dim[0])  # skimage.io has channel first except for color images
             del img
             gc.collect()
 
@@ -130,7 +131,13 @@ if __name__ == '__main__':
                     handle.set_page(k)
                     stack.append(np.asarray(handle[:], dtype=np.uint16))
                 else:
-                    stack.append(np.asarray(imread(result.INPUT, img_num=k, is_ome=False, plugin='tifffile'), dtype=np.uint16))
+                    # If there are 3 z-slices/focus planes, imread considers it as an RGB image
+                    if dim[2] != 3:
+                        stack.append(np.asarray(imread(result.INPUT, img_num=k, is_ome=False, plugin='tifffile'), dtype=np.uint16))
+                    else:
+                        a = imread(result.INPUT, is_ome=False) # a is XY3 image, automatically considered as RGB is dim[2]==3
+                        for u in range(dim[2]):
+                            stack.append(a[:,:,u])
             else:
                 stack.append(np.asarray(imread(filelist[k], is_ome=False, plugin='tifffile'), dtype=np.uint16))
         if os.path.isfile(result.INPUT):

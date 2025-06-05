@@ -66,9 +66,10 @@ def EDF(inputfilename,outputdir, logfile):
     edfscript = 'extended_depth_of_field_correction.py'
     edfscript = os.path.join(ROOT, edfscript)
     if system == 'Linux':
-        cmd = 'python ' + edfscript + ' -i="' + inputfilename + '" -o="' + outputname + '" > /dev/null 2>&1'
+        cmd = 'python ' + edfscript + ' -i="' + inputfilename + '" -o="' + outputname + '"  --backend skimage > /dev/null 2>&1'
     elif system == 'Windows':
-        cmd = 'python ' + edfscript + ' -i="' + inputfilename + '" -o="' + outputname + '" > NUL 2>&1'
+        cmd = 'python ' + edfscript + ' -i="' + inputfilename + '" -o="' + outputname + '"  --backend skimage > NUL 2>&1'
+    # Windows does not support pytiff easily, so use skimage.io.imread to read images
     logging.info(cmd)
     #print(cmd)
     with open(logfile,'a') as f:
