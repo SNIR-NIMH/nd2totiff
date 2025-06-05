@@ -12,11 +12,13 @@ Requirements:
 4. If Java JDK is not already installed, install Java JDK-11 
    (a) Download openjdk-11.0.2_windows-x64_bin.zip. It can be downloaded from 
    here without a login https://www.openlogic.com/openjdk-downloads
-   (b) Extract to some folder, e.g. C:\Program Files\Java\jdk-11
-5. Add that folder to Windows PATH
-   (a) Search for Edit Environ Variables (requires admin access). 
+   (b) Extract to some folder, e.g. C:\Program Files\Java\jdk-11   
+5. Add that folder to Windows PATH (requires admin access)
+   (a) Search for Edit Environ Variables . 
    (b) Edit the "System variables" Path (not the User variables Path)
-   (c) Add a new path and add C:\Program Files\Java\jdk-11
+   (c) Add a new path and add C:\Program Files\Java\jdk-11\bin
+   (d) Check successful Java installation by opening a new Anaconda prompt and 
+   simply running java to get its usage.
 
 Pytiff isn't supported on Windows (or is it too complicated to compile from source?).
 Therefore, import pytiff is commented out inside extended_depth_of_field_correction.py
