@@ -7,30 +7,30 @@
 Nikon Biopipeline provides Widefield images using arbitrarily drawn ROIs.
 This pipeline takes an unstitched .nd2 file with multiple channels and focal
 points and 
-1. applies focus correction  on the multiple z-planes
-   https://github.com/sjawhar/focus-stacking
-
-2. stitches the tiles to create multi-channel 2D TIFF images
-3. generates a pyramidal TIFF for faster QA using NGFF converter
-   https://github.com/glencoesoftware/NGFF-Converter
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-
-
-### Prerequisites
-* Python ND2 library https://pypi.org/project/nd2/
+1. converts the nd2 file to tifs
+2. applies focus correction [[1]](#1) on the multiple z-planes using
 ```
-pip install nd2
-pip install opencv-python
+https://github.com/sjawhar/focus-stacking
 ```
-* Matlab Compiler Runtime (MCR): Download the 64-bit Linux MCR installer for MATLAB 2023a (v914).
+3. stitches the tiles to create multi-channel 2D TIFF images.
+4. generates a pyramidal TIFF for fast QA using NGFF converter,
+```
+https://github.com/glencoesoftware/NGFF-Converter
+```
+The stitching code is written in Matlab, the source files are also provided.
+
+
+<!--Prerequisites -->
+## Prerequisites
+* Python 3.10. The code is tested on Anaconda 2023.03-1 version, which can be downloaded from here,
+```
+https://repo.anaconda.com/archive/
+```
+* Matlab Compiler Runtime (MCR): Download the 64-bit Linux/Windows MCR installer for MATLAB 2022a (v912).
 ```
 https://www.mathworks.com/products/compiler/matlab-runtime.html
 ```
-* Java JDK-11: Either download from Oracle website with login, or from a free source
+* Java: If Java is not installed, either download from Oracle website with login, or from a login-free source
 ```
 https://www.openlogic.com/openjdk-downloads
 ```
@@ -38,40 +38,56 @@ https://www.openlogic.com/openjdk-downloads
 ```
 https://github.com/ome/bioformats/releases
 ```
-* bioformats2raw-0.6.1
+* bioformats2raw-0.6.1: To convert 3D tiff to OMEZARR format
 ```
 https://github.com/glencoesoftware/bioformats2raw/releases/download/v0.6.1/bioformats2raw-0.6.1.zip
 ```
-* raw2ometiff-0.4.1
+* raw2ometiff-0.4.1: To convert OMEZARR to 3D pyramidal tiff
 ```
 https://github.com/glencoesoftware/raw2ometiff/releases/download/v0.4.1/raw2ometiff-0.4.1.zip
 ```
 
-### Installation
+## Installation
 
-1. Install the MCR (v914) to somewhere suitable. For Linux, 
-
-2. Add the MCR installation path, i.e. the v912 directory, to all of the included shell scripts' MCRROOT variable. 
-In each of the 16 shell scripts, replace the line containing ```MCRROOT=/usr/local/matlab-compiler/v912```
-to the path where the MCR is installed, e.g.,
-```
-MCRROOT=/home/user/MCR/v912
-```
-if the MCR is installed in ```/home/user/MCR```.
-
-3. Install ANTs binaries and add the binary path to shell \$PATH
-```
-export PATH=/home/user/ANTs-2.2.0/install/bin:${PATH}
-```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+Check the README files within Linux or Windows folders. Windows installation will require
+administrator privilege, which Linux installation can be done as a regular user.
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+After all successful installations, the conversion can be done via a GUI. Run the following command in a terminal
+on Linux or an Anaconda prompt on Windows after changing to the relevant folder (pushd C:/myfolder/nd2totiff)
+```
+python nikon_biopipeline_processing_gui.py
+```
+It should bring up a GUI
+<p align="center">
+  <img src="https://github.com/SNIR-NIMH/nd2totiff/blob/main/imgs/GUI.png" height="300"/>  
+</p>
 
+Either a folder containing multiple ND2 files or a single ND2 file can be given as the input.
+If input is a folder, any ND2 file within it containing the word "Overview" will not be processed
+as they are not the tiled images. Only images with the word "Region" will be processed. These are 
+hardcoded in the *nikon_biopipeline_processing.py* script into L344-356. Feel free to change the 
+check strings as needed.
 
+Only 4 images are processed in parallel (hardcoded). Each image can use any number of CPUs, the
+default is kept at 12. Change it according to the computer spec.
+
+For command line usage, use
+```
+python nikon_biopipeline_processing.py -h
+usage: nikon_biopipeline_processing.py [-h] -i INPUT -o OUTPUTDIR [-n NUMCPU]
+
+EDF & Stitching of ND2 files to Pyramidal TIF
+
+options:
+  -h, --help    show this help message and exit
+  -i INPUT      Input ND2 file or a folder containing multiple ND2 files. If it is a folder, then the ND2 files will be processed 4 at a time, each using
+                NUMCPU parallel processes.
+  -o OUTPUTDIR  Output folder
+  -n NUMCPU     (Optional) Number of CPUs to use for parallel processing for each image. Default 12
+```
 
 <!-- LICENSE -->
 ## License
