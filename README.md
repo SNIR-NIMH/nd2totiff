@@ -5,32 +5,32 @@
 ## About The Project
 
 Nikon Biopipeline provides Widefield images using arbitrarily drawn ROIs.
-This pipeline takes an unstitched .nd2 file with multiple channels and focal
-points and 
-1. converts the nd2 file to tifs
-2. applies focus correction [[1]](#1) on the multiple z-planes using
+This pipeline takes an unstitched tiled .nd2 file with multiple channels and multiple focal
+points and does the following,
+1. convert the nd2 file to tifs
+2. for every tile, apply focus correction [[1]](#1) on the multiple z-planes using
 ```
 https://github.com/sjawhar/focus-stacking
 ```
-3. stitches the tiles to create multi-channel 2D TIFF images.
-4. generates a pyramidal TIFF for fast QA using NGFF converter,
+3. stitch the focus corrected tiles to create multi-channel 2D TIFF images.
+4. generate a pyramidal TIFF for fast QA using NGFF converter,
 ```
 https://github.com/glencoesoftware/NGFF-Converter
 ```
-The stitching code is written in Matlab, the source files are also provided.
+The stitching code is written in Matlab, and all the source files are also provided.
 
 
 <!--Prerequisites -->
 ## Prerequisites
-* Python 3.10. The code is tested on Anaconda 2023.03-1 version, which can be downloaded from here,
+* Python 3.10: The code is tested on Anaconda 2023.03-1 version, which can be downloaded from here,
 ```
 https://repo.anaconda.com/archive/
 ```
-* Matlab Compiler Runtime (MCR): Download the 64-bit Linux/Windows MCR installer for MATLAB 2022a (v912).
+* Matlab Compiler Runtime (MCR): 64-bit Linux/Windows MCR installer for MATLAB 2022a (v912) is required
 ```
 https://www.mathworks.com/products/compiler/matlab-runtime.html
 ```
-* Java: If Java is not installed, either download from Oracle website with login, or from a login-free source
+* Java: If Java is not installed, download JDK-11 either from Oracle website with login, or from a login-free source
 ```
 https://www.openlogic.com/openjdk-downloads
 ```
@@ -49,7 +49,8 @@ https://github.com/glencoesoftware/raw2ometiff/releases/download/v0.4.1/raw2omet
 
 ## Installation
 
-Check the README files within Linux or Windows folders. Windows installation will require
+Detailed installation instructions for both Linux and Windows versions are provided in the corresponding README files 
+within Linux or Windows folders. Windows installation will require
 administrator privilege, which Linux installation can be done as a regular user.
 
 
@@ -65,7 +66,7 @@ It should bring up a GUI
   <img src="https://github.com/SNIR-NIMH/nd2totiff/blob/main/imgs/GUI.png" height="300"/>  
 </p>
 
-Either a folder containing multiple ND2 files or a single ND2 file can be given as the input.
+The input can either be a folder containing multiple ND2 files or a single ND2 file.
 If input is a folder, any ND2 file within it containing the word "Overview" will not be processed
 as they are not the tiled images. Only images with the word "Region" will be processed. These are 
 hardcoded in the *nikon_biopipeline_processing.py* script into L344-356. Feel free to change the 
