@@ -63,7 +63,7 @@ python nikon_biopipeline_processing_gui.py
 ```
 It should bring up a GUI
 <p align="center">
-  <img src="https://github.com/SNIR-NIMH/nd2totiff/blob/main/imgs/GUI.png" height="300"/>  
+  <img src="https://github.com/SNIR-NIMH/nd2totiff/blob/main/imgs/GUI.png" height="250"/>  
 </p>
 
 The input can either be a folder containing multiple ND2 files or a single ND2 file.
@@ -84,8 +84,8 @@ EDF & Stitching of ND2 files to Pyramidal TIF
 
 options:
   -h, --help    show this help message and exit
-  -i INPUT      Input ND2 file or a folder containing multiple ND2 files. If it is a folder, then the ND2 files will be processed 4 at a time, each using
-                NUMCPU parallel processes.
+  -i INPUT      Input ND2 file or a folder containing multiple ND2 files. If it is a folder, then the
+                ND2 files will be processed 4 at a time, each using NUMCPU parallel processes.
   -o OUTPUTDIR  Output folder
   -n NUMCPU     (Optional) Number of CPUs to use for parallel processing for each image. Default 12
 ```
