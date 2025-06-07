@@ -90,6 +90,26 @@ options:
   -n NUMCPU     (Optional) Number of CPUs to use for parallel processing for each image. Default 12
 ```
 
+
+<!-- NOTES -->
+## Notes
+
+1. While converting non-pyramidal tif to OMEZARR, we have used the following
+   tile height and width
+   ```
+    -h 8192 -w 8192
+   ```
+   As opposed to the default 1024, we specifically used tile size of 8192
+   to reduce the number of zarr files, while increasing each file size from 2MB
+   to 128MB. This decreases total file write time, specially on
+   spinning disks as less number of files are to be written in a folder. However,
+   for very large images, the default Java heap space can be limited and
+   *java.lang.OutOfMemoryError: Java heap space* can occur. To fix it, set the
+   JAVA_OPTS environment variable to accommodate max 100GB RAM.
+   ```
+   setenv JAVA_OPTS "-Xms10g -Xmx100g"
+   ```
+
 <!-- LICENSE -->
 ## License
 
