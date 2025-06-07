@@ -90,6 +90,19 @@ options:
   -n NUMCPU     (Optional) Number of CPUs to use for parallel processing for each image. Default 12
 ```
 
+<!-- Example Data -->
+## Example Data
+Two example datasets are provided, one small (11027x12842x3px) and one big (62308x92310x2px).
+```
+http://hpc.nih.gov/~NIMH_MHSNIR/smalldata.zip
+http://hpc.nih.gov/~NIMH_MHSNIR/bigdata.zip
+```
+The small one has 6x7 mosaic with 38 tiles, each 1952x1952px, having 0.32 x 0.32 µm resolution.
+The big one has 29x43 mosaic with 1005 tiles, each 2304x2304px, having 0.16 x 0.16 µm µm resolution.
+
+<p align="center">
+  <img src="https://github.com/SNIR-NIMH/nd2totiff/blob/main/imgs/bigdata.png" height="500"/>  
+</p>
 
 <!-- NOTES -->
 ## Notes
