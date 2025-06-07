@@ -107,8 +107,8 @@ The big one has 29x43 mosaic with 1005 tiles, each 2304x2304px, having 0.16 x 0.
 <!-- NOTES -->
 ## Notes
 
-1. While converting non-pyramidal tif to OMEZARR, we have used the following
-   tile height and width
+1. While converting non-pyramidal tif to OMEZARR, the following tile height and width are used
+   in bioformats2raw,
    ```
     -h 8192 -w 8192
    ```
@@ -117,11 +117,12 @@ The big one has 29x43 mosaic with 1005 tiles, each 2304x2304px, having 0.16 x 0.
    to 128MB. This decreases total file write time, specially on
    spinning disks as less number of files are to be written in a folder. However,
    for very large images, the default Java heap space can be limited and
-   *java.lang.OutOfMemoryError: Java heap space* can occur. To fix it, set the
+   *java.lang.OutOfMemoryError: Java heap space* can occur. To fix it, either set the
    JAVA_OPTS environment variable to accommodate max 100GB RAM.
    ```
    setenv JAVA_OPTS "-Xms10g -Xmx100g"
    ```
+   or change the tile height and width back to 1024.
 
 <!-- LICENSE -->
 ## License
