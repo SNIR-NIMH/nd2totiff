@@ -132,6 +132,7 @@ def edf_stitch_one_image(nd2file,outputdir,numcpu=8):
 
         a.close()
 
+
         edfscript = 'extended_depth_of_field_correction.py'
         if system == 'Linux':
             stitchscript1 = 'nikon_biopipeline_stitch.sh'
@@ -198,18 +199,34 @@ def edf_stitch_one_image(nd2file,outputdir,numcpu=8):
 
             # nd2 to tif
             logging.info('Converting ND2 to tifs:')
-            if Z>1:
-                for n in tqdm(range(N)):
-                    for c in range(0, C):
-                        vol = x[n, :, c, :, :]
-                        s = 'C' + str(c).zfill(2) + '_Tile' + str(n + 1).zfill(6) + '.tif'
+            if C>1:
+                if Z>1:
+                    for n in tqdm(range(N)):
+                        for c in range(0, C):
+                            vol = x[n, :, c, :, :]
+                            s = 'C' + str(c).zfill(2) + '_Tile' + str(n + 1).zfill(6) + '.tif'
+                            s = os.path.join(tifdir, s)
+                            imsave(s, vol, check_contrast=False, compression=0)
+                else:
+                    for n in tqdm(range(N)):
+                        for c in range(0, C):
+                            vol = x[n, c, :, :]
+                            s = 'C' + str(c).zfill(2) + '_Tile' + str(n + 1).zfill(6) + '.tif'
+                            s = os.path.join(tifdir, s)
+                            imsave(s, vol, check_contrast=False, compression=0)
+            else:  # C=1, single channel
+                if Z>1:
+                    for n in tqdm(range(N)):
+
+                        vol = x[n, :, :, :]
+                        s = 'C00_Tile' + str(n + 1).zfill(6) + '.tif'
                         s = os.path.join(tifdir, s)
                         imsave(s, vol, check_contrast=False, compression=0)
-            else:
-                for n in tqdm(range(N)):
-                    for c in range(0, C):
-                        vol = x[n, c, :, :]
-                        s = 'C' + str(c).zfill(2) + '_Tile' + str(n + 1).zfill(6) + '.tif'
+                else:
+                    for n in tqdm(range(N)):
+
+                        vol = x[n, :, :]
+                        s = 'C00_Tile' + str(n + 1).zfill(6) + '.tif'
                         s = os.path.join(tifdir, s)
                         imsave(s, vol, check_contrast=False, compression=0)
         else:

@@ -58,8 +58,13 @@ for i=1:N
         X(i)=str2num(x.OME.Image{i}.Pixels.Plane{1}.Attributes.PositionX);
         Y(i)=str2num(x.OME.Image{i}.Pixels.Plane{1}.Attributes.PositionY);
     else
-        X(i)=str2num(x.OME.Image{i}.Pixels.Plane.Attributes.PositionX);
-        Y(i)=str2num(x.OME.Image{i}.Pixels.Plane.Attributes.PositionY);
+        try
+            X(i)=str2num(x.OME.Image{i}.Pixels.Plane.Attributes.PositionX);
+            Y(i)=str2num(x.OME.Image{i}.Pixels.Plane.Attributes.PositionY);
+        catch e
+            X(i)=str2num(x.OME.Image{i}.Pixels.Plane{1}.Attributes.PositionX);
+            Y(i)=str2num(x.OME.Image{i}.Pixels.Plane{1}.Attributes.PositionY);
+        end
     end
 end
 res=[str2num(x.OME.Image{1}.Pixels.Attributes.PhysicalSizeX) ...
@@ -85,7 +90,11 @@ ovl1=round(100*ovl);
 if numchannels>1
     unit=x.OME.Image{1}.Pixels.Plane{1}.Attributes.PositionXUnit;
 else
-    unit=x.OME.Image{1}.Pixels.Plane.Attributes.PositionXUnit;
+    try
+        unit=x.OME.Image{1}.Pixels.Plane.Attributes.PositionXUnit;
+    catch e
+        unit=x.OME.Image{1}.Pixels.Plane{1}.Attributes.PositionXUnit;
+    end
 end
 fprintf('Estimated overlap factor = %.2f%%, actual %d%%\n',100*ovl,ovl1);
 ovl=ovl1/100;
